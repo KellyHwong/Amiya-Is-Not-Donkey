@@ -52,7 +52,8 @@ def get_image_links(main_keyword, supplemented_keywords, link_file_path, num_req
         # search_query = quote(main_keyword + ' ' + supplemented_keywords[i])
         search_query = quote(main_keyword)
 
-        url = "https://www.google.com/search?q="+search_query+"&source=lnms&tbm=isch"
+        url = "https://www.google.com/search?q="+search_query + \
+            "&source=lnms&tbm=isch&hl=en-US"  # 加上 en-US
         driver.get(url)
 
         for _ in range(number_of_scrolls):
@@ -154,7 +155,8 @@ def download_images(link_file_path, download_dir, log_dir):
 
 
 if __name__ == "__main__":
-    main_keywords = ["rabbit", "donkey"]
+    # main_keywords = ["rabbit", "donkey"]
+    main_keywords = ["donkey", "rabbit"]
     supplemented_keywords = ["placeholder"]
     num_requested = 8000
 
@@ -181,9 +183,8 @@ if __name__ == "__main__":
     #     link_file_path = link_files_dir + keyword
     #     get_image_links(keyword, supplemented_keywords, link_file_path)
 
-    # multiple processes
-    # default number of process is the number of cores of your CPU, change it by yourself
     # thread_num = 2
+    """
     thread_num = 1
     p = Pool(thread_num)  # 只有两个query
     for keyword in main_keywords:
@@ -192,6 +193,7 @@ if __name__ == "__main__":
     p.close()
     p.join()
     print('Fininsh getting all image links')
+    """
 
     ###################################
     # download images with link file
@@ -203,6 +205,7 @@ if __name__ == "__main__":
 
     # multiple processes
     # default number of process is the number of cores of your CPU, change it by yourself
+    thread_num = 2
     p = Pool(thread_num)
     for keyword in main_keywords:
         p.apply_async(download_images, args=(
