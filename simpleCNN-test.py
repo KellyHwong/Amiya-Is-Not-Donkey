@@ -20,7 +20,7 @@ from model import simple_CNN
 TRAIN_DATA_DIR = "./data/train/"
 TEST_DATA_DIR = "./data/tests/"
 MODEL_SAVES_DIR = "./models-simpleCNN/"
-MODEL_CKPT_FILE = "model_50-val_acc-0.8415.h5"
+
 
 # constants
 IF_FAST_RUN = True
@@ -104,9 +104,9 @@ def main():
     print(model_type)
 
     # loading model
-    model_ckpt = os.path.join(MODEL_SAVES_DIR, MODEL_CKPT_FILE)
+    model_ckpt = os.path.join(MODEL_SAVES_DIR, "model_24-val_acc-0.7852.h5")
     if os.path.isfile(model_ckpt):
-        print("loading weights: ", MODEL_CKPT_FILE)
+        print("loading weights")
         model.load_weights(model_ckpt)
 
     """Predict"""
@@ -140,7 +140,7 @@ def main():
     test_df['category'] = predict[:, 0]
     print("Predict Samples: ")
     print(type(test_df))
-    print(test_df)
+    print(test_df.head(10))
 
     """See predicted result with sample images"""
     """

@@ -15,7 +15,7 @@ from resnet import model_depth, resnet_v2, lr_schedule
 from model import auc
 
 # Training parameters
-IF_DATA_AUGMENTATION = False
+IF_DATA_AUGMENTATION = True
 NUM_CLASSES = 2
 IMAGE_WIDTH = IMAGE_HEIGHT = 224
 IMAGE_SIZE = (IMAGE_WIDTH, IMAGE_HEIGHT)
