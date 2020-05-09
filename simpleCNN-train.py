@@ -28,10 +28,10 @@ def auc(y_true, y_pred):
 # data path
 TRAIN_DATA_DIR = "./data/train/"
 MODEL_SAVES_DIR = "./models-simpleCNN/"
-MODEL_CKPT_FILE = "model_50-val_acc-0.8415.h5"
+
 
 # constants
-IF_FAST_RUN = False
+IF_FAST_RUN = True
 EPOCHS_OVER_NIGHT = 50
 IMAGE_WIDTH = IMAGE_HEIGHT = 128
 IMAGE_SIZE = (IMAGE_WIDTH, IMAGE_HEIGHT)
@@ -51,9 +51,9 @@ def main():
     model.summary()
     print(model_type)
 
-    """ Continuing Training """
+    print("Continuing training...")
     # model_ckpt = "model-" + model_type + ".h5"
-    model_ckpt = os.path.join(MODEL_SAVES_DIR, MODEL_CKPT_FILE)
+    model_ckpt = os.path.join(MODEL_SAVES_DIR, "model_24-val_acc-0.7852.h5")
     if os.path.isfile(model_ckpt):
         print("loading existed model...")
         model.load_weights(model_ckpt)
@@ -177,14 +177,14 @@ def main():
         callbacks=callbacks
     )
 
-    """ Save History """
+    print("Save history")
     with open('./history', 'wb') as pickle_file:
         pickle.dump(history.history, pickle_file)
 
-    """Save Model"""
+    print("Save model...")
     model.save_weights("model-" + model_type + ".h5")
 
-    """Visualize Training"""
+    print("Visualize training...")
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 12))
     ax1.plot(history.history['loss'], color='b', label="Training loss")
     ax1.plot(history.history['val_loss'], color='r', label="validation loss")

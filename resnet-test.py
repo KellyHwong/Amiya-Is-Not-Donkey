@@ -170,10 +170,10 @@ def main():
 
     """Submission"""
     submission_df = test_df.copy()
-    submission_df['id'] = submission_df['filename'].str.split('.').str[0]
-    submission_df['label'] = submission_df['category']
-    submission_df.drop(['filename', 'category'], axis=1, inplace=True)
-    submission_df.to_csv('submission.csv', index=False)
+    submission_df["id"] = submission_df["filename"].str.split(".").str[0]
+    submission_df["label"] = submission_df["category"]
+    submission_df.drop(["filename", "category"], axis=1, inplace=True)
+    submission_df.to_csv("result.csv", index=False)
 
 
 if __name__ == "__main__":
