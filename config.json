@@ -1,0 +1,5 @@
+{
+  "ROOT_PATH": "D:\\DeepLearningData\\Amiya-Is-Not-Donkey",
+  "MODEL_CKPT_FILE": "ResNet56v2.020-auc-0.9648.h5",
+  "TRAIN_DATA_DIR": "data\\train"
+}

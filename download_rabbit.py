@@ -80,6 +80,7 @@ def get_image_links(main_keyword, supplemented_keywords, link_file_path, num_req
             img_urls.add(img_url)
         print('Process-{0} add keyword {1} , got {2} image urls so far'.format(
             main_keyword, supplemented_keywords[i], len(img_urls)))
+
     print(
         'Process-{0} totally get {1} images'.format(main_keyword, len(img_urls)))
     driver.quit()
@@ -92,7 +93,6 @@ def get_image_links(main_keyword, supplemented_keywords, link_file_path, num_req
 
 def download_images(link_file_path, download_dir, log_dir):
     """download images whose links are in the link file
-
     Args:
         link_file_path (str): path of file containing links of images
         download_dir (str): directory to store the downloaded images
@@ -154,9 +154,10 @@ def download_images(link_file_path, download_dir, log_dir):
                 continue
 
 
-if __name__ == "__main__":
+def main():
     # main_keywords = ["rabbit", "donkey"]
     main_keywords = ["donkey", "rabbit"]
+    main_keywords = ["rabbit"]
     supplemented_keywords = ["placeholder"]
     num_requested = 8000
 
@@ -175,6 +176,7 @@ if __name__ == "__main__":
         if not os.path.exists(d):
             os.makedirs(d)
 
+    task = "get_image_links"  # "download_images" or "get_image_links"
     ###################################
     # get image links and store in file
     ###################################
@@ -183,33 +185,35 @@ if __name__ == "__main__":
     #     link_file_path = link_files_dir + keyword
     #     get_image_links(keyword, supplemented_keywords, link_file_path)
 
-    # thread_num = 2
-    """
-    thread_num = 1
-    p = Pool(thread_num)  # 只有两个query
-    for keyword in main_keywords:
-        p.apply_async(get_image_links, args=(
-            keyword, supplemented_keywords, link_files_dir + keyword, num_requested))
-    p.close()
-    p.join()
-    print('Fininsh getting all image links')
-    """
+    if task == "get_image_links":
+        thread_num = 1  # 2
+        p = Pool(thread_num)  # 只有两个query
+        for keyword in main_keywords:
+            p.apply_async(get_image_links, args=(
+                keyword, supplemented_keywords, link_files_dir + keyword, num_requested))
+        p.close()
+        p.join()
+        print('Fininsh getting all image links')
+    else:
+        ###################################
+        # download images with link file
+        ###################################
+        # single process
+        # for keyword in main_keywords:
+        #     link_file_path = link_files_dir + keyword
+        #     download_images(link_file_path, download_dir)
 
-    ###################################
-    # download images with link file
-    ###################################
-    # single process
-    # for keyword in main_keywords:
-    #     link_file_path = link_files_dir + keyword
-    #     download_images(link_file_path, download_dir)
+        # multiple processes
+        # default number of process is the number of cores of your CPU, change it by yourself
+        thread_num = 2
+        p = Pool(thread_num)
+        for keyword in main_keywords:
+            p.apply_async(download_images, args=(
+                link_files_dir + keyword, download_dir, log_dir))
+        p.close()
+        p.join()
+        print('Finish downloading all images')
 
-    # multiple processes
-    # default number of process is the number of cores of your CPU, change it by yourself
-    thread_num = 2
-    p = Pool(thread_num)
-    for keyword in main_keywords:
-        p.apply_async(download_images, args=(
-            link_files_dir + keyword, download_dir, log_dir))
-    p.close()
-    p.join()
-    print('Finish downloading all images')
+
+if __name__ == "__main__":
+    main()
